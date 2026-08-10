@@ -12,4 +12,9 @@ export const usersController = {
     const user = await usersService.getById(id);
     res.json(user);
   },
+
+  create: async (req: Request, res: Response) => {
+    const user = await usersService.create(req.body);
+    res.status(201).json(user);
+  },
 };

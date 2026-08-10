@@ -1,5 +1,5 @@
 import { prisma } from "../lib/prisma.ts";
-import type { User } from "../generated/prisma/client.ts";
+import type { User, CreateUserPayload } from "../types/user.types.ts";
 
 export const UserModel = {
   findAll: async (): Promise<User[]> => {
@@ -9,15 +9,13 @@ export const UserModel = {
     const user = await prisma.user.findUnique({ where: { user_id: id } });
     return user ?? undefined;
   },
-  findByClerkId: async (clerkId: string): Promise<User | null> => {
-    return await prisma.user.findUnique({ where: { user_clerkId: clerkId } });
-  },
   findByEmail: async (email: string): Promise<User | null> => {
     return await prisma.user.findUnique({ where: { email: email } });
   },
-  create: async (
-    data: Omit<User, "user_id" | "createdAt" | "updatedAt">,
-  ): Promise<User> => {
-    return prisma.user.create({ data });
+  create: async (data: User): Promise<User> => {
+    const user = await prisma.user.create({
+      data: data,
+    });
+    return user;
   },
 };

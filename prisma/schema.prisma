@@ -14,10 +14,10 @@ datasource db {
 
 model User {
   user_id         String    @id @default(uuid())
-  user_clerkId    String    @unique
   firstName       String
   lastName        String
   email           String    @unique
+  password        String
   role            Role      @default(Student)
   user_rating     Int
   profile_image   String

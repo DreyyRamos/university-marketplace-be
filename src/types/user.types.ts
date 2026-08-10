@@ -1,16 +1,10 @@
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  password: string;
-  role: "student" | "seller" | "admin";
-  createdAt: Date;
-}
+import type { User as PrismaUser } from "../generated/prisma/client.ts";
 
-export type SafeUser = Omit<User, "password">;
+export type User = PrismaUser;
+export type SafeUser = Omit<User, "user_clerkId">;
 
 export interface CreateUserPayload {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  password: string;
 }

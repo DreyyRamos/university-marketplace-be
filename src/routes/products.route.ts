@@ -13,7 +13,7 @@ const createProductSchema = z.object({
   product_image: z.string(),
   product_description: z.string().min(1),
   product_details: z.string().min(1),
-  rating: z.number(),
+  rating: z.number().optional(),
   condition: z.enum(["LIKE_NEW", "GOOD", "STILL_USABLE"]),
   location: z.string(),
 });
@@ -24,6 +24,7 @@ router.get("/", asyncHandler(productsController.getAllProducts));
 router.get("/:product_id", asyncHandler(productsController.getProductById));
 router.post(
   "/create",
+  authMiddleware,
   validate(createProductSchema),
   asyncHandler(productsController.listAnItem),
 );

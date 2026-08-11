@@ -22,7 +22,7 @@ export interface CreateProductPayload {
   product_image: string;
   product_description: string;
   product_details: string;
-  rating: number;
+  rating?: number;
   condition: "LIKE_NEW" | "GOOD" | "STILL_USABLE";
   location: string;
 }

@@ -8,11 +8,8 @@ export const ProductModel = {
   findById: async (product_id: string): Promise<Product | null> => {
     return prisma.product.findUnique({ where: { product_id } });
   },
-  createProduct: async (
-    data: Omit<
-      Product,
-      "product_id" | "createdAt" | "updatedAt" | "seller_id" | "seller"
-    >,
+  listAnItem: async (
+    data: Omit<Product, "product_id" | "createdAt" | "updatedAt" | "seller">,
   ): Promise<Product> => {
     return prisma.product.create({ data });
   },

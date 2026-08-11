@@ -18,7 +18,7 @@ router.get("/:id", authMiddleware, asyncHandler(usersController.getById));
 router.post(
   "/",
   validate(createUserSchema),
-  asyncHandler(usersController.create),
+  asyncHandler(usersController.register),
 );
 router.delete(
   "/:id",

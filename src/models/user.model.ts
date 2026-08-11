@@ -12,7 +12,7 @@ export const UserModel = {
   findByEmail: async (email: string): Promise<User | null> => {
     return await prisma.user.findUnique({ where: { email: email } });
   },
-  create: async (data: User): Promise<User> => {
+  createUser: async (data: Omit<User, "user_id">): Promise<User> => {
     const user = await prisma.user.create({
       data: data,
     });

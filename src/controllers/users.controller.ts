@@ -13,8 +13,14 @@ export const usersController = {
     res.json(user);
   },
 
-  create: async (req: Request, res: Response) => {
-    const user = await usersService.create(req.body);
+  register: async (req: Request, res: Response) => {
+    const user = await usersService.createUser(req.body);
     res.status(201).json(user);
+  },
+
+  login: async (req: Request, res: Response) => {
+    const { email, password } = req.body;
+    const { user, token } = await usersService.login(email, password);
+    res.json({ user, token });
   },
 };

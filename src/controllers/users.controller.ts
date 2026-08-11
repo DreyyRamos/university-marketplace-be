@@ -21,6 +21,18 @@ export const usersController = {
   login: async (req: Request, res: Response) => {
     const { email, password } = req.body;
     const { user, token } = await usersService.login(email, password);
-    res.json({ user, token });
+    
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+    res.json({ user });
   },
+
+  logout: async(req: Request, res: Response) => {
+    res.clearCookie("token")
+    res.json({message: "Logged out"})
+  }
 };

@@ -28,6 +28,7 @@ router.post(
   validate(loginSchema),
   asyncHandler(usersController.login),
 );
+router.post("/logout", asyncHandler(usersController.logout));
 
 
 // router.get("/:id",asyncHandler(usersController.getById));

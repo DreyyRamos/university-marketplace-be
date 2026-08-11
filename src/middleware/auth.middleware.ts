@@ -13,7 +13,10 @@ export function authMiddleware(
   next: NextFunction,
 ) {
   const header = req.headers.authorization;
-  const token = header?.startsWith("Bearer ") ? header.split(" ")[1] : null;
+  const headerToken = header?.startsWith("Bearer ")
+    ? header.split(" ")[1]
+    : null;
+  const token = headerToken || req.cookies?.token;
 
   if (!token) throw new ApiError(401, "No token provided");
 

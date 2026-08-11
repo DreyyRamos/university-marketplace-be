@@ -3,6 +3,7 @@ import { usersController } from "../controllers/users.controller.ts";
 import { asyncHandler } from "../utils/asyncHandler.ts";
 import { validate } from "../middleware/validate.middleware.ts";
 import z from "zod/v3";
+import { authMiddleware } from "../middleware/auth.middleware.ts";
 
 const router = Router();
 
@@ -28,6 +29,7 @@ router.post(
   validate(loginSchema),
   asyncHandler(usersController.login),
 );
+router.get("/me", authMiddleware, asyncHandler(usersController.getCurrentUser));
 router.post("/logout", asyncHandler(usersController.logout));
 
 

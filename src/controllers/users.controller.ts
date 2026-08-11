@@ -1,4 +1,5 @@
 import type { Request, Response } from "express";
+import type { AuthRequest } from "../middleware/auth.middleware.ts";
 import { usersService } from "../services/users.service.ts";
 
 export const usersController = {
@@ -13,6 +14,12 @@ export const usersController = {
     res.json(user);
   },
 
+  getCurrentUser: async (req: AuthRequest, res: Response) => {
+    const currentUserId = req.user!.id;
+    const currentUser = await usersService.getCurrentUser(currentUserId);
+    res.json(currentUser);
+  },
+
   register: async (req: Request, res: Response) => {
     const user = await usersService.createUser(req.body);
     res.status(201).json(user);
@@ -21,7 +28,7 @@ export const usersController = {
   login: async (req: Request, res: Response) => {
     const { email, password } = req.body;
     const { user, token } = await usersService.login(email, password);
-    
+
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -31,8 +38,8 @@ export const usersController = {
     res.json({ user });
   },
 
-  logout: async(req: Request, res: Response) => {
-    res.clearCookie("token")
-    res.json({message: "Logged out"})
-  }
+  logout: async (req: Request, res: Response) => {
+    res.clearCookie("token");
+    res.json({ message: "Logged out" });
+  },
 };

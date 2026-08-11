@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { env } from "../config/env.ts";
 import { UserModel } from "../models/user.model.ts";
 import { ApiError } from "../utils/ApiError.ts";
-import type { CreateUserPayload, SafeUser } from "../types/user.types.ts";
+import type { CreateUserPayload, SafeUser, User } from "../types/user.types.ts";
 
 function toSafeUSer(user: any): SafeUser {
   const { password, ...safe } = user;
@@ -59,4 +59,10 @@ export const usersService = {
 
     return { user: toSafeUSer(user), token };
   },
+
+  getCurrentUser: async (currentUserId: string): Promise<SafeUser> => {
+    const currentUser = await UserModel.currentUser(currentUserId);
+    if (!currentUser) throw new ApiError(404, "No user found");
+    return toSafeUSer(currentUser);
+  }
 };

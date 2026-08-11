@@ -18,4 +18,7 @@ export const UserModel = {
     });
     return user;
   },
+  currentUser: async (currentUserId: string): Promise<User | null> => {
+    return await prisma.user.findUnique({ where: { user_id: currentUserId } });
+  },
 };

@@ -36,6 +36,7 @@ model Product {
   product_image       String
   product_description String
   product_details     String
+  category            Category  @default(Other)
   rating              Int
   condition           Condition
   location            String
@@ -43,6 +44,15 @@ model Product {
   seller              User?     @relation(fields: [seller_id], references: [user_id])
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @default(now())
+}
+
+enum Category {
+  Electronics
+  Books
+  Furniture
+  Clothing
+  Sports
+  Other
 }
 
 enum Condition {

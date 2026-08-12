@@ -14,6 +14,14 @@ const createProductSchema = z.object({
   product_description: z.string().min(1),
   product_details: z.string().optional(),
   rating: z.number().optional(),
+  category: z.enum([
+    "Electronics",
+    "Books",
+    "Furniture",
+    "Clothing",
+    "Sports",
+    "Other",
+  ]),
   condition: z.enum(["LIKE_NEW", "GOOD", "STILL_USABLE"]),
   location: z.string(),
 });

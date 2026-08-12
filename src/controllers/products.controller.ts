@@ -13,6 +13,7 @@ export const productsController = {
     res.json(product);
   },
   listAnItem: async (req: AuthRequest, res: Response) => {
+    console.log("CONTROLLER req.body:", req.body);
     const sellerId = req.user!.id;
     const product = await productsServices.listAnItem(req.body, sellerId);
     res.status(201).json(product);

@@ -8,12 +8,11 @@ export const productsController = {
     res.json(products);
   },
   getProductById: async (req: Request, res: Response) => {
-    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-    const product = await productsServices.getById(id);
+    const product_id = req.params.product_id as string;
+    const product = await productsServices.getById(product_id);
     res.json(product);
   },
   listAnItem: async (req: AuthRequest, res: Response) => {
-    console.log("CONTROLLER req.body:", req.body);
     const sellerId = req.user!.id;
     const product = await productsServices.listAnItem(req.body, sellerId);
     res.status(201).json(product);

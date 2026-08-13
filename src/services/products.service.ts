@@ -2,7 +2,7 @@ import { ProductModel } from "../models/product.model.ts";
 import { ApiError } from "../utils/ApiError.ts";
 import { type CreateProductPayload } from "../types/product.types.js";
 import type { Category as PrismaCategory } from "../generated/prisma/enums.ts";
-import type { Product } from "../generated/prisma/client.ts";
+import type { Product } from "../types/product.types.js";
 
 export const productsServices = {
   getAll: async (): Promise<Product[]> => {

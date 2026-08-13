@@ -1,5 +1,5 @@
 import { prisma } from "../lib/prisma.ts";
-import type { User, CreateUserPayload } from "../types/user.types.ts";
+import type { User } from "../types/user.types.ts";
 
 export const UserModel = {
   findAll: async (): Promise<User[]> => {

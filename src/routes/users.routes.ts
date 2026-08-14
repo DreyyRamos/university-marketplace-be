@@ -14,6 +14,11 @@ const createUserSchema = z.object({
 });
 
 router.get("/", authMiddleware, asyncHandler(usersController.getAll));
+router.get(
+  "/user-listed-items",
+  authMiddleware,
+  asyncHandler(usersController.getCurrentUserListing),
+);
 router.get("/:id", authMiddleware, asyncHandler(usersController.getById));
 router.post(
   "/",

@@ -21,4 +21,21 @@ export const UserModel = {
   currentUser: async (currentUserId: string): Promise<User | null> => {
     return await prisma.user.findUnique({ where: { user_id: currentUserId } });
   },
+  getUserListings: async (currentUserId: string) => {
+    return await prisma.user.findUnique({
+      where: { user_id: currentUserId },
+      select: {
+        user_id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        role: true,
+        user_rating: true,
+        profile_image: true,
+        createdAt: true,
+        updatedAt: true,
+        products_listed: true,
+      },
+    });
+  },
 };

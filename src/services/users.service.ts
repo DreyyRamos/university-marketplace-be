@@ -64,5 +64,13 @@ export const usersService = {
     const currentUser = await UserModel.currentUser(currentUserId);
     if (!currentUser) throw new ApiError(404, "No user found");
     return toSafeUSer(currentUser);
+  },
+
+  getUserListings: async (
+    currentUserId: string,
+  ) => {
+    const userListings = await UserModel.getUserListings(currentUserId);
+    if (!userListings) throw new ApiError(404, "No listed products");
+    return { userListings };
   }
 };

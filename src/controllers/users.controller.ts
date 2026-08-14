@@ -20,6 +20,12 @@ export const usersController = {
     res.json(currentUser);
   },
 
+  getCurrentUserListing: async (req: AuthRequest, res: Response) => {
+    const currentUserId = req.user!.id;
+    const userListings = await usersService.getUserListings(currentUserId);
+    res.json(userListings);
+  },
+
   register: async (req: Request, res: Response) => {
     const user = await usersService.createUser(req.body);
     res.status(201).json(user);

@@ -10,7 +10,7 @@ const router = Router();
 const createProductSchema = z.object({
   product_name: z.string().min(1),
   product_price: z.number(),
-  product_image: z.string().optional(),
+  product_image: z.array(z.string()).optional(),
   product_description: z.string().min(1),
   product_details: z.string().optional(),
   rating: z.number().optional(),

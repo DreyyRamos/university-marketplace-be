@@ -33,7 +33,7 @@ model Product {
   product_id          String    @id @default(cuid())
   product_name        String
   product_price       Int
-  product_image       String
+  product_image       String[]
   product_description String
   product_details     String
   category            Category  @default(Other)

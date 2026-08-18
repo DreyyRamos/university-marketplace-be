@@ -21,7 +21,7 @@ export const UserModel = {
   currentUser: async (currentUserId: string): Promise<User | null> => {
     return await prisma.user.findUnique({
       where: { user_id: currentUserId },
-      include: { products_listed: true },
+      include: { products_listed: true, conversations: true, messages: true },
     });
   },
   getUserListings: async (currentUserId: string) => {

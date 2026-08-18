@@ -13,15 +13,17 @@ datasource db {
 }
 
 model User {
-  user_id         String    @id @default(uuid())
+  user_id         String         @id @default(uuid())
   firstName       String
   lastName        String
-  email           String    @unique
+  email           String         @unique
   password        String
-  role            Role      @default(Student)
+  role            Role           @default(Student)
   user_rating     Int
   profile_image   String
   products_listed Product[]
+  conversations   Conversation[]
+  messages        Message[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -30,20 +32,52 @@ model User {
 }
 
 model Product {
-  product_id          String    @id @default(cuid())
+  product_id          String         @id @default(cuid())
   product_name        String
   product_price       Int
   product_image       String[]
   product_description String
   product_details     String
-  category            Category  @default(Other)
+  category            Category       @default(Other)
   rating              Int
   condition           Condition
   location            String
   seller_id           String
-  seller              User?     @relation(fields: [seller_id], references: [user_id])
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @default(now())
+  seller              User?          @relation(fields: [seller_id], references: [user_id])
+  product_status      Status         @default(Active)
+  conversations       Conversation[]
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @default(now())
+}
+
+model Conversation {
+  conversation_id      String    @id @default(cuid())
+  conversation_preview String
+  unread               Int       @default(0)
+  messages             Message[]
+  buyer_id             String
+  buyer                User      @relation(fields: [buyer_id], references: [user_id])
+  product_id           String
+  product              Product   @relation(fields: [product_id], references: [product_id])
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @default(now())
+
+  @@index([product_id])
+  @@index([buyer_id])
+}
+
+model Message {
+  message_id      String       @id @default(uuid())
+  message_text    String
+  conversation_id String
+  conversation    Conversation @relation(fields: [conversation_id], references: [conversation_id])
+  sender_id       String
+  sender          User         @relation(fields: [sender_id], references: [user_id])
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @default(now())
+
+  @@index([conversation_id])
+  @@index([sender_id])
 }
 
 enum Category {
@@ -59,6 +93,12 @@ enum Condition {
   LIKE_NEW
   GOOD
   STILL_USABLE
+}
+
+enum Status {
+  Active
+  Sold
+  Unavailable
 }
 
 enum Role {

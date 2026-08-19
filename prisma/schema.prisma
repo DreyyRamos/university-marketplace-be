@@ -53,17 +53,17 @@ model Product {
 model Conversation {
   conversation_id      String    @id @default(cuid())
   conversation_preview String
-  unread               Int       @default(0)
+  unread               Boolean   @default(false)
   messages             Message[]
-  buyer_id             String
-  buyer                User      @relation(fields: [buyer_id], references: [user_id])
+  seller_id            String
+  seller               User      @relation(fields: [seller_id], references: [user_id])
   product_id           String
   product              Product   @relation(fields: [product_id], references: [product_id])
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @default(now())
 
   @@index([product_id])
-  @@index([buyer_id])
+  @@index([seller_id])
 }
 
 model Message {

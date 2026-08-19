@@ -1,7 +1,10 @@
 import { ProductModel } from "../models/product.model.ts";
 import { ApiError } from "../utils/ApiError.ts";
 import { type CreateProductPayload } from "../types/product.types.js";
-import type { Category as PrismaCategory } from "../generated/prisma/enums.ts";
+import type {
+  Category as PrismaCategory,
+  Status as PrismaStatus,
+} from "../generated/prisma/enums.ts";
 import type { Product } from "../types/product.types.js";
 
 export const productsServices = {
@@ -23,6 +26,7 @@ export const productsServices = {
       rating: 0,
       seller_id: sellerId,
       category: payload.category as unknown as PrismaCategory,
+      product_status: payload.product_status as unknown as PrismaStatus,
     });
 
     return product;

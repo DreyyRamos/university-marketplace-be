@@ -13,17 +13,18 @@ datasource db {
 }
 
 model User {
-  user_id         String         @id @default(uuid())
-  firstName       String
-  lastName        String
-  email           String         @unique
-  password        String
-  role            Role           @default(Student)
-  user_rating     Int
-  profile_image   String
-  products_listed Product[]
-  conversations   Conversation[]
-  messages        Message[]
+  user_id             String         @id @default(uuid())
+  firstName           String
+  lastName            String
+  email               String         @unique
+  password            String
+  role                Role           @default(Student)
+  user_rating         Int
+  profile_image       String
+  products_listed     Product[]
+  buyerConversations  Conversation[] @relation("BuyerConversations")
+  sellerConversations Conversation[] @relation("SellerConversations")
+  messages            Message[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -55,15 +56,17 @@ model Conversation {
   conversation_preview String
   unread               Boolean   @default(false)
   messages             Message[]
+  buyer_id             String
+  buyer                User      @relation("BuyerConversations", fields: [buyer_id], references: [user_id])
   seller_id            String
-  seller               User      @relation(fields: [seller_id], references: [user_id])
+  seller               User      @relation("SellerConversations", fields: [seller_id], references: [user_id])
   product_id           String
   product              Product   @relation(fields: [product_id], references: [product_id])
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @default(now())
 
   @@index([product_id])
-  @@index([seller_id])
+  @@index([buyer_id])
 }
 
 model Message {

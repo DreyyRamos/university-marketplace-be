@@ -9,14 +9,10 @@ export type Conversation = PrismaConversation;
 export type Message = PrismaMessage;
 
 export interface ConversationPayload {
-  //   conversation_id: string;
-  conversation_preview: string;
-  unread: boolean;
-  //   messages: Message[];
-  seller_id: string;
-  //   seller: User;
+  conversation_preview?: string;
+  unread?: boolean;
   product_id: string;
-  //   product: Product;
+  seller_id: string;
 }
 
 export interface MessagePayload {

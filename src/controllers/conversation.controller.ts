@@ -15,9 +15,15 @@ export const conversationsController = {
   },
   startConversation: async (req: AuthRequest, res: Response) => {
     const sellerId = req.params.id as string;
+    const buyerId = req.user!.id;
+
+    if (buyerId === sellerId) {
+      return res.status(400).json({ message: "Can't message yourself" });
+    }
+
     const conversation = await conversationsServices.startConversation(
-      req.body,
-      sellerId,
+      { ...req.body, seller_id: sellerId },
+      buyerId,
     );
     res.json(conversation);
   },

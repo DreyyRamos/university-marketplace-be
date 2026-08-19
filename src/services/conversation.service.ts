@@ -17,13 +17,13 @@ export const conversationsServices = {
     return conversation;
   },
   startConversation: async (
-    payload: ConversationPayload,
-    seller_id: string,
+    payload: ConversationPayload & { seller_id: string },
+    buyer_id: string,
   ): Promise<Conversation> => {
     const conversation = await ConversationModel.startConversation({
-      ...payload,
-      seller_id,
-      conversation_id: "",
+      product_id: payload.product_id,
+      buyer_id,
+      seller_id: payload.seller_id,
     });
     return conversation;
   },

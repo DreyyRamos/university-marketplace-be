@@ -10,21 +10,18 @@ export const ConversationModel = {
   ): Promise<Conversation | null> => {
     return prisma.conversation.findUnique({ where: { conversation_id } });
   },
-  startConversation: async (
-    data: Omit<
-      Conversation,
-      | "unread"
-      | "conversation_preview"
-      | "seller"
-      | "product"
-      | "createdAt"
-      | "updatedAt"
-    >,
-  ): Promise<Conversation> => {
+  startConversation: async (data: {
+    product_id: string;
+    buyer_id: string;
+    seller_id: string;
+    conversation_preview?: string;
+  }): Promise<Conversation> => {
     return prisma.conversation.create({
       data: {
-        ...data,
-        conversation_preview: "",
+        product_id: data.product_id,
+        buyer_id: data.buyer_id,
+        seller_id: data.seller_id,
+        conversation_preview: data.conversation_preview ?? "",
         unread: false,
       },
     });

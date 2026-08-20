@@ -37,5 +37,10 @@ router.post(
   authMiddleware,
   asyncHandler(conversationsController.startConversation),
 );
+router.post(
+  "/start/:id/chat",
+  authMiddleware,
+  asyncHandler(conversationsController.sendMessage),
+);
 
 export default router;

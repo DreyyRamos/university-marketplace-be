@@ -16,10 +16,10 @@ export interface ConversationPayload {
 }
 
 export interface MessagePayload {
-  message_id: string;
+  message_id?: string;
   message_text: string;
-  conversation_id: string;
-  conversation: Conversation;
-  sender_id: string;
-  sender: User;
+  conversation_id?: string;
+  conversation?: Conversation;
+  sender_id?: string;
+  sender?: User;
 }

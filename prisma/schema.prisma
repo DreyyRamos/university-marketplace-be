@@ -65,6 +65,7 @@ model Conversation {
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @default(now())
 
+  @@unique([product_id, buyer_id, seller_id])
   @@index([product_id])
   @@index([buyer_id])
 }

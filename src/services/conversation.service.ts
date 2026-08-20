@@ -1,6 +1,6 @@
 import { ConversationModel } from "../models/conversation.model.ts";
 import { ApiError } from "../utils/ApiError.ts";
-import { type ConversationPayload } from "../types/conversation.type.ts";
+import { type ConversationPayload, type MessagePayload } from "../types/conversation.type.ts";
 import { type Conversation } from "../types/conversation.type.ts";
 
 export const conversationsServices = {
@@ -26,5 +26,17 @@ export const conversationsServices = {
       seller_id: payload.seller_id,
     });
     return conversation;
+  },
+  sendMessage: async (
+    payload: MessagePayload,
+    conversation_id: string,
+    sender_id: string,
+  ): Promise<MessagePayload> => {
+    const message = await ConversationModel.sendMessage({
+      message_text: payload.message_text,
+      conversation_id,
+      sender_id,
+    });
+    return message;
   },
 };

@@ -27,4 +27,19 @@ export const conversationsController = {
     );
     res.json(conversation);
   },
+  sendMessage: async (req: AuthRequest, res: Response) => {
+    const conversation_id = req.params.id as string;
+    const senderId = req.user!.id;
+
+    if (!conversation_id) {
+      return res.status(404).json({ message: "No conversation found" });
+    }
+
+    const message = await conversationsServices.sendMessage(
+      req.body,
+      conversation_id,
+      senderId,
+    );
+    res.json(message);
+  },
 };

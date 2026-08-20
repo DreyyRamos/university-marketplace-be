@@ -30,6 +30,7 @@ export const ConversationModel = {
             location: true,
           },
         },
+        messages: true,
       },
     });
   },

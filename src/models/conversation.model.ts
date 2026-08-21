@@ -20,6 +20,18 @@ export const ConversationModel = {
             createdAt: true,
           },
         },
+        buyer: {
+          select: {
+            user_id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+            role: true,
+            user_rating: true,
+            profile_image: true,
+            createdAt: true,
+          },
+        },
         product: {
           select: {
             product_id: true,

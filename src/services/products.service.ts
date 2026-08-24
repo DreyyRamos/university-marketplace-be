@@ -1,6 +1,9 @@
 import { ProductModel } from "../models/product.model.ts";
 import { ApiError } from "../utils/ApiError.ts";
-import { type CreateProductPayload } from "../types/product.types.js";
+import {
+  type CreateProductPayload,
+  type UpdateProductPayload,
+} from "../types/product.types.js";
 import type {
   Category as PrismaCategory,
   Status as PrismaStatus,
@@ -30,5 +33,28 @@ export const productsServices = {
     });
 
     return product;
+  },
+  updateProduct: async (
+    product_id: string,
+    payload: UpdateProductPayload,
+  ): Promise<Product> => {
+    const existing = await ProductModel.findById(product_id);
+    if (!existing) throw new ApiError(404, "No product found");
+
+    const product = await ProductModel.updateListing(
+      {
+        ...payload,
+      },
+      product_id,
+    );
+
+    return product;
+  },
+  deleteProduct: async (product_id: string): Promise<Product> => {
+    const existingProduct = await ProductModel.findById(product_id);
+    if (!existingProduct) throw new ApiError(404, "No product found");
+
+    const toDeleteProduct = await ProductModel.deleteListing(product_id);
+    return toDeleteProduct;
   },
 };

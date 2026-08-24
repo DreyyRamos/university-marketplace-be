@@ -26,6 +26,20 @@ const createProductSchema = z.object({
   location: z.string(),
 });
 
+const updateProductSchema = z.object({
+  product_name: z.string().min(1).optional(),
+  product_price: z.number().optional(),
+  product_image: z.array(z.string()).optional(),
+  product_description: z.string().min(1).optional(),
+  product_details: z.string().optional(),
+  rating: z.number().optional(),
+  category: z
+    .enum(["Electronics", "Books", "Furniture", "Clothing", "Sports", "Other"])
+    .optional(),
+  condition: z.enum(["LIKE_NEW", "GOOD", "STILL_USABLE"]).optional(),
+  location: z.string().optional(),
+});
+
 // router.use(authMiddleware);
 
 router.get("/", asyncHandler(productsController.getAllProducts));
@@ -35,6 +49,17 @@ router.post(
   authMiddleware,
   validate(createProductSchema),
   asyncHandler(productsController.listAnItem),
+);
+router.patch(
+  "/:product_id",
+  authMiddleware,
+  validate(updateProductSchema),
+  asyncHandler(productsController.updateProduct),
+);
+router.delete(
+  "/:product_id",
+  authMiddleware,
+  asyncHandler(productsController.deleteProduct),
 );
 
 export default router;

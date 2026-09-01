@@ -25,6 +25,7 @@ model User {
   buyerConversations  Conversation[] @relation("BuyerConversations")
   sellerConversations Conversation[] @relation("SellerConversations")
   messages            Message[]
+  savedItems          SavedItems[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -47,8 +48,21 @@ model Product {
   seller              User?          @relation(fields: [seller_id], references: [user_id])
   product_status      Status         @default(Active)
   conversations       Conversation[]
+  saved               SavedItems[]
   createdAt           DateTime       @default(now())
   updatedAt           DateTime       @default(now())
+}
+
+model SavedItems {
+  saved_id   String   @id @default(cuid())
+  user_id    String
+  user       User     @relation(fields: [user_id], references: [user_id])
+  product_id String
+  product    Product  @relation(fields: [product_id], references: [product_id])
+  quantity   Int      @default(1)
+  createdAt  DateTime @default(now())
+
+  @@unique([user_id, product_id])
 }
 
 model Conversation {

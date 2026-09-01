@@ -58,4 +58,24 @@ export const ProductModel = {
   deleteListing: async (product_id: string): Promise<Product> => {
     return prisma.product.delete({ where: { product_id } });
   },
+  saveItem: async (userId: string, productId: string, qty = 1) => {
+    return prisma.savedItems.upsert({
+      where: { user_id_product_id: { user_id: userId, product_id: productId } },
+      update: { quantity: { increment: qty } },
+      create: { user_id: userId, product_id: productId, quantity: qty },
+      include: { product: true },
+    });
+  },
+  findAllSavedItems: async (userId: string) => {
+    return prisma.savedItems.findMany({
+      where: { user_id: userId },
+      include: { product: true },
+      orderBy: { createdAt: "desc" },
+    });
+  },
+  removeSavedItem: async (userId: string, productId: string) => {
+    return prisma.savedItems.delete({
+      where: { user_id_product_id: { user_id: userId, product_id: productId } },
+    });
+  },
 };

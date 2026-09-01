@@ -57,4 +57,20 @@ export const productsServices = {
     const toDeleteProduct = await ProductModel.deleteListing(product_id);
     return toDeleteProduct;
   },
+  saveItem: async (userId: string, productId: string): Promise<any> => {
+    try {
+      return await ProductModel.saveItem(userId, productId);
+    } catch (err) {
+      if (err) {
+        throw new ApiError(404, "Product does not exist.");
+      }
+      throw err;
+    }
+  },
+  getAllSaved: async (userId: string): Promise<any[]> => {
+    return ProductModel.findAllSavedItems(userId);
+  },
+  removeSaved: async (userId: string, productId: string): Promise<any> => {
+    return ProductModel.removeSavedItem(userId, productId);
+  },
 };

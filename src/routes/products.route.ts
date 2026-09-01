@@ -43,13 +43,28 @@ const updateProductSchema = z.object({
 // router.use(authMiddleware);
 
 router.get("/", asyncHandler(productsController.getAllProducts));
-router.get("/:product_id", asyncHandler(productsController.getProductById));
 router.post(
   "/create",
   authMiddleware,
   validate(createProductSchema),
   asyncHandler(productsController.listAnItem),
 );
+router.post(
+  "/saveItem",
+  authMiddleware,
+  asyncHandler(productsController.saveItem),
+);
+router.get(
+  "/saveItem",
+  authMiddleware,
+  asyncHandler(productsController.getAllSavedItems),
+);
+router.delete(
+  "/saveItem/:product_id",
+  authMiddleware,
+  asyncHandler(productsController.removeSavedItem),
+);
+router.get("/:product_id", asyncHandler(productsController.getProductById));
 router.patch(
   "/:product_id",
   authMiddleware,

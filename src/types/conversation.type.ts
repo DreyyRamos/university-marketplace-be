@@ -1,7 +1,6 @@
 import type {
   Conversation as PrismaConversation,
   Message as PrismaMessage,
-  Product,
   User,
 } from "../generated/prisma/client.ts";
 

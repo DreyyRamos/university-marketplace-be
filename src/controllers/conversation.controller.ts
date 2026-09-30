@@ -4,11 +4,13 @@ import { conversationsServices } from "../services/conversation.service.ts";
 
 export const conversationsController = {
   getAllConversation: async (req: AuthRequest, res: Response) => {
-    const conversations = await conversationsServices.getAllConversation();
+    const userId = req.user!.id;
+    const conversations =
+      await conversationsServices.getAllConversationByUser(userId);
     res.json(conversations);
   },
   getConversationById: async (req: AuthRequest, res: Response) => {
-    const convo_id = req.params.product_id as string;
+    const convo_id = req.params.id as string;
     const conversation =
       await conversationsServices.getConversationById(convo_id);
     res.json(conversation);

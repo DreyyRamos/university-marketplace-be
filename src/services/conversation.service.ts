@@ -4,9 +4,13 @@ import { type ConversationPayload, type MessagePayload } from "../types/conversa
 import { type Conversation } from "../types/conversation.type.ts";
 
 export const conversationsServices = {
-  getAllConversation: async (): Promise<Conversation[]> => {
-    const conversation = await ConversationModel.findAllConversation();
-    return conversation;
+  getAllConversationByUser: async (
+    userId: string,
+  ): Promise<Conversation[]> => {
+    const conversations = await ConversationModel.findAllConversationByUser(
+      userId,
+    );
+    return conversations;
   },
   getConversationById: async (
     conversation_id: string,

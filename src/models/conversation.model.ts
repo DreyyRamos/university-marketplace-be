@@ -5,8 +5,11 @@ import type {
 } from "../types/conversation.type.ts";
 
 export const ConversationModel = {
-  findAllConversation: async (): Promise<Conversation[]> => {
+  findAllConversationByUser: async (userId: string): Promise<Conversation[]> => {
     return prisma.conversation.findMany({
+      where: {
+        OR: [{ buyer_id: userId }, { seller_id: userId }],
+      },
       include: {
         seller: {
           select: {
@@ -42,14 +45,59 @@ export const ConversationModel = {
             location: true,
           },
         },
-        messages: true,
+        messages: {
+          orderBy: { createdAt: "desc" },
+          take: 1,
+        },
       },
+      orderBy: { updatedAt: "desc" },
     });
   },
   findConversationById: async (
     conversation_id: string,
   ): Promise<Conversation | null> => {
-    return prisma.conversation.findUnique({ where: { conversation_id } });
+    return prisma.conversation.findUnique({
+      where: { conversation_id },
+      include: {
+        seller: {
+          select: {
+            user_id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+            role: true,
+            user_rating: true,
+            profile_image: true,
+            createdAt: true,
+          },
+        },
+        buyer: {
+          select: {
+            user_id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+            role: true,
+            user_rating: true,
+            profile_image: true,
+            createdAt: true,
+          },
+        },
+        product: {
+          select: {
+            product_id: true,
+            product_name: true,
+            product_price: true,
+            product_image: true,
+            condition: true,
+            location: true,
+          },
+        },
+        messages: {
+          orderBy: { createdAt: "asc" },
+        },
+      },
+    });
   },
   startConversation: async (data: {
     product_id: string;
@@ -84,12 +132,22 @@ export const ConversationModel = {
     conversation_id: string;
     sender_id: string;
   }): Promise<MessagePayload> => {
-    return prisma.message.create({
-      data: {
-        message_text: data.message_text,
-        conversation: { connect: { conversation_id: data.conversation_id } },
-        sender: { connect: { user_id: data.sender_id } },
-      },
-    });
+    const [message] = await prisma.$transaction([
+      prisma.message.create({
+        data: {
+          message_text: data.message_text,
+          conversation: { connect: { conversation_id: data.conversation_id } },
+          sender: { connect: { user_id: data.sender_id } },
+        },
+      }),
+      prisma.conversation.update({
+        where: { conversation_id: data.conversation_id },
+        data: {
+          conversation_preview: data.message_text,
+          updatedAt: new Date(),
+        },
+      }),
+    ]);
+    return message;
   },
 };
